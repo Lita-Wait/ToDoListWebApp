@@ -10,12 +10,12 @@ namespace ToDoList.Domain.Entity
         public long ID { get; set; }
 
         [Required(ErrorMessage ="Название обязательно")]
-        [StringLength(50)]
+        [MaxLength(50,ErrorMessage ="Максимальная длина 50 символов")]
         [Display(Name = "Название задачи")]
         public string? Name { get; set; }
 
         [Required(ErrorMessage = "Описание обязательно")]
-        [StringLength(200)]
+        [MaxLength(200, ErrorMessage = "Максимальная длина 200 символов")]
         [Display(Name = "Описание задачи")]
         public string? Description { get; set; }
 

@@ -6,6 +6,12 @@ namespace ToDoList.Controllers
 {
     public class TaskController : Controller
     {
+        private ILogger<TaskController> _logger;
+        public TaskController(ILogger<TaskController> logger) 
+        {
+            _logger = logger;
+        } 
+
         public IActionResult Index()
         {
             return View();
@@ -14,15 +20,21 @@ namespace ToDoList.Controllers
         [HttpPost]
         public IActionResult Create(TaskEntity model)
         {
-            Debug.WriteLine(model.Name);
-            Debug.WriteLine(model.Description);
-            Debug.WriteLine(model.Priority);
-
-            if(ModelState.IsValid)
+            _logger.LogInformation($"Создание задачи {model.Name}, {model.Priority}, {model.Description}");
+            try
             {
-                return Ok(model);
+                if (ModelState.IsValid)
+                {
+                    return Ok(model);
+                }
+                return View("Index");
             }
-            return View("Index");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message, "Произошла ошибка при попытке создания задачи");
+                throw;
+            }
+            
         }
     }
 }
